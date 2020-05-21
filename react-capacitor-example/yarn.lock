@@ -1044,6 +1044,11 @@
   dependencies:
     tslib "^1.9.0"
 
+"@capacitor/ios@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.1.0.tgz#490a9a58896f911f80727fa2e9e86b31e84d9d9e"
+  integrity sha512-KE5hGQiv86Ply/WvT5OvrRBcbM+XdqbGkfp03hK8TG8tYNvJw4mXT3+bH5QsOVOI23o4LVzRWtwPmDyxCw+Pyw==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -2922,6 +2927,11 @@ coa@^2.0.2:
     "@types/q" "^1.5.1"
     chalk "^2.4.1"
     q "^1.1.2"
+
+cocoapods@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/cocoapods/-/cocoapods-0.0.0.tgz#394adb14507abe6cc238736980e1152a4107b7b3"
+  integrity sha512-nsdKucT3oTSvS5s+W3/uxSn57+0e2LxMo2XcTsHwDCdYHB+T21haL11AkioVBACloAMQr00EDBZ//2DnynD9SQ==
 
 code-point-at@^1.0.0:
   version "1.1.0"
