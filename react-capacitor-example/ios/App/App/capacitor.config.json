@@ -6,8 +6,21 @@
     "webDir": "build",
     "plugins": {
         "SplashScreen": {
-            "launchShowDuration": 0
+            "launchShowDuration": 300000,
+            "launchAutoHide": true,
+            "backgroundColor": "#ffffffff",
+            "androidSplashResourceName": "splash",
+            "androidScaleType": "CENTER_CROP",
+            "androidSpinnerStyle": "large",
+            "iosSpinnerStyle": "small",
+            "spinnerColor": "#999999",
+            "showSpinner": true,
+            "splashFullScreen": true,
+            "splashImmersive": true
         }
+    },
+    "server": {
+        "url": "http://127.0.0.1:3000"
     },
     "cordova": {}
 }

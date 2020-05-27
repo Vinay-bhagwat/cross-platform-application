@@ -68,7 +68,7 @@ export const HeaderComponent:React.FC<{}>=()=> {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{width:"100%"}}>
+      <AppBar position="static" style={{width:"100%",height:'11vh'}}>
         <Toolbar>
           <IconButton
             edge="start"
