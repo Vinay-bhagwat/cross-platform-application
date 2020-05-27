@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Button } from '@material-ui/core';
 import { GeoLocationComponent } from '../component/GeoLocationComponent'
 import { Plugins, Device } from '@capacitor/core';
 import { AppApisHandler } from '../native/AppAPIS';
-import { ModalPopup } from '../component/ModalPopup'
+import { ModalPopup } from '../component/ModalPopup';
+import { StatusBarHandler } from '../component/StatusBar'
 const { SplashScreen } = Plugins;
 
 export const BodyComponent: React.FC<{}> = () => {
@@ -12,6 +13,8 @@ export const BodyComponent: React.FC<{}> = () => {
         showDuration: 2000,
         autoHide: true
     });
+
+    const [isLightStatusBar,setStatusBar]=useState(true)
 
     const showDeviceInfo = async () => {
         let info = await Device.getInfo();
@@ -28,13 +31,26 @@ export const BodyComponent: React.FC<{}> = () => {
         ModalPopup.alertHandler('App URL', url)
     }
 
- const promptHandler=()=>ModalPopup.promptHandler('CANCEL','Placeholder','input text','message','OK', 'Prompt title')
+    const promptHandler = () => ModalPopup.promptHandler('CANCEL', 'Placeholder', 'input text', 'message', 'OK', 'Prompt title')
+
+    const handlerURL = async () => {
+        const { canOpenUrlHandler } = AppApisHandler,
+            { value } = await canOpenUrlHandler()
+        ModalPopup.confirmHandler('CANCEL', `The app can ${!value && 'not'} open URLs`, 'OK', 'AppURL')
+
+    }
+
+    const listRenderer = () => {
+        return [{ msg: 'Get Device Info', handler: showDeviceInfo }, { msg: 'Can open URL handler?', handler: handlerURL },
+        { msg: 'Open prompt handler', handler: promptHandler }, { msg: 'Get App URL', handler: LaunchUrlHandler },
+        { msg: 'Hide Status bar', handler: StatusBarHandler.hideStatusBar }, { msg: 'Show Status bar', handler: StatusBarHandler.showStatusBar }, { msg: 'Dark mode Status bar', handler: () => {setStatusBar(!isLightStatusBar); StatusBarHandler.changeStatusBar(isLightStatusBar) } }]
+            .map(item => <div><Button variant="contained" color="primary" onClick={item.handler}>{item.msg}</Button></div>)
+    }
 
     return <Container style={{ height: '79vh', overflowY: 'scroll' }}>
         <GeoLocationComponent />
-        <Button variant="contained" color="primary" onClick={showDeviceInfo}>Get Device Info</Button>
-        <Button variant="contained" color="primary" onClick={AppApisHandler.canOpenUrlHandler}>Can open URL handler?</Button>
-        <Button variant="contained" color="primary" onClick={promptHandler}>Open prompt handler</Button>
-        <Button variant="contained" color="primary" onClick={LaunchUrlHandler}>Get App URL</Button>
+
+        {listRenderer()}
+        <div><Button variant="contained" color="primary" onClick={AppApisHandler.exitAppHnadler}>Exit app</Button></div>
     </Container>
 }

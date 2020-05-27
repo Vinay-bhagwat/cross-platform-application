@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,10 +7,14 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Avatar from '@material-ui/core/Avatar';
+import { takePicture } from '../component/CameraComponent';
+import { showToaster } from '../component/ToasterComponent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginTop:'20px'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -66,6 +70,16 @@ const useStyles = makeStyles((theme) => ({
 export const HeaderComponent:React.FC<{}>=()=> {
   const classes = useStyles();
 
+  const [avatar,setAvatar]=useState(undefined)
+
+  const handleCameraCapture=async()=>{
+    const {path,webPath,base64String}=await takePicture()
+    console.log(base64String,webPath,path);
+    showToaster('Setting up Profile avatar...')
+    
+  setAvatar(webPath)
+}
+
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{width:"100%",height:'11vh'}}>
@@ -94,6 +108,9 @@ export const HeaderComponent:React.FC<{}>=()=> {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
+         <div style={{    margin: "10px"}}>
+         <Avatar alt="VB" onClick={handleCameraCapture} src={avatar} className={classes.large} />
+           </div>
         </Toolbar>
       </AppBar>
     </div>

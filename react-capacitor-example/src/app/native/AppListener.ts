@@ -1,6 +1,6 @@
 
 import { Plugins, AppState } from '@capacitor/core';
-const { App: PluginApp } = Plugins;
+const { App: PluginApp} = Plugins;
 
 
 
@@ -18,4 +18,10 @@ export const AppListeners = () => {
         // state.isActive contains the active state
         console.log('App state changed. Is active?', state.isActive);
     });
+
+    window.addEventListener('statusTap', function () {
+        console.log("statusbar tapped");
+      });
+      
+
 }

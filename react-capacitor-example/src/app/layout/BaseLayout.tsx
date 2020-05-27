@@ -11,6 +11,5 @@ export const BaseLayout: React.FC<{}> = () => {
         <HeaderComponent />
         <BodyComponent />
         <FooterComponent />
-
     </>
 }
