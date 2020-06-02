@@ -6,10 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 ReactDOM.render(
-  <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+,  document.getElementById('root')
 );
 defineCustomElements(window);
 

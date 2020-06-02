@@ -6,13 +6,13 @@
     "webDir": "build",
     "plugins": {
         "SplashScreen": {
-            "launchShowDuration": 300000,
+            "launchShowDuration": 5000,
             "launchAutoHide": true,
             "backgroundColor": "#ffffffff",
             "androidSplashResourceName": "splash",
             "androidScaleType": "CENTER_CROP",
             "androidSpinnerStyle": "large",
-            "iosSpinnerStyle": "small",
+            "iosSpinnerStyle": "large",
             "spinnerColor": "#999999",
             "showSpinner": true,
             "splashFullScreen": true,

@@ -5,6 +5,7 @@ import { Plugins, Device } from '@capacitor/core';
 import { AppApisHandler } from '../native/AppAPIS';
 import { ModalPopup } from '../component/ModalPopup';
 import { StatusBarHandler } from '../component/StatusBar'
+import { FileManager } from '../native/FileManager';
 const { SplashScreen } = Plugins;
 
 export const BodyComponent: React.FC<{}> = () => {
@@ -14,7 +15,7 @@ export const BodyComponent: React.FC<{}> = () => {
         autoHide: true
     });
 
-    const [isLightStatusBar,setStatusBar]=useState(true)
+    const [isLightStatusBar, setStatusBar] = useState(true)
 
     const showDeviceInfo = async () => {
         let info = await Device.getInfo();
@@ -23,6 +24,8 @@ export const BodyComponent: React.FC<{}> = () => {
             `UUID: ${info.uuid};
             Model: ${info.model}`
         );
+        // console.log(platform.name);
+
     }
 
     const LaunchUrlHandler = async () => {
@@ -41,16 +44,23 @@ export const BodyComponent: React.FC<{}> = () => {
     }
 
     const listRenderer = () => {
-        return [{ msg: 'Get Device Info', handler: showDeviceInfo }, { msg: 'Can open URL handler?', handler: handlerURL },
-        { msg: 'Open prompt handler', handler: promptHandler }, { msg: 'Get App URL', handler: LaunchUrlHandler },
-        { msg: 'Hide Status bar', handler: StatusBarHandler.hideStatusBar }, { msg: 'Show Status bar', handler: StatusBarHandler.showStatusBar }, { msg: 'Dark mode Status bar', handler: () => {setStatusBar(!isLightStatusBar); StatusBarHandler.changeStatusBar(isLightStatusBar) } }]
-            .map(item => <div><Button variant="contained" color="primary" onClick={item.handler}>{item.msg}</Button></div>)
+        return [
+            { msg: 'Get Device Info', handler: showDeviceInfo },
+            { msg: 'Can open URL handler?', handler: handlerURL },
+            { msg: 'Open prompt handler', handler: promptHandler },
+            { msg: 'Get App URL', handler: LaunchUrlHandler },
+            { msg: 'Hide Status bar', handler: StatusBarHandler.hideStatusBar },
+            { msg: 'Show Status bar', handler: StatusBarHandler.showStatusBar },
+            { msg: 'Dark mode Status bar', handler: () => { setStatusBar(!isLightStatusBar); StatusBarHandler.changeStatusBar(isLightStatusBar) } },
+            { msg: 'Open file manager', handler: ()=> FileManager.readDirectory('./','Documents')}
+        ]
+            .map(item => <div key={item.msg} style={{ margin: '10px' }}><Button variant="contained" color="primary" onClick={item.handler}>{item.msg}</Button></div>)
     }
 
     return <Container style={{ height: '79vh', overflowY: 'scroll' }}>
         <GeoLocationComponent />
 
         {listRenderer()}
-        <div><Button variant="contained" color="primary" onClick={AppApisHandler.exitAppHnadler}>Exit app</Button></div>
+        <div><Button variant="contained" color="primary" onClick={AppApisHandler.exitAppHnadler} disabled>Exit app(only android as back button not on iPohone)</Button></div>
     </Container>
 }

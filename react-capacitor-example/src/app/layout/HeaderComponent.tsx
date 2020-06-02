@@ -10,11 +10,19 @@ import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 import { takePicture } from '../component/CameraComponent';
 import { showToaster } from '../component/ToasterComponent';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import ListItem from '@material-ui/core/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop:'20px'
+    marginTop: '20px'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -67,22 +75,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const HeaderComponent:React.FC<{}>=()=> {
+export const HeaderComponent: React.FC<{ username: string }> = (props) => {
   const classes = useStyles();
 
-  const [avatar,setAvatar]=useState(undefined)
+  const [avatar, setAvatar] = useState(undefined)
 
-  const handleCameraCapture=async()=>{
-    const {path,webPath,base64String}=await takePicture()
-    console.log(base64String,webPath,path);
+  const handleCameraCapture = async () => {
+    const { path, webPath, base64String } = await takePicture()
+    console.log(base64String, webPath, path);
     showToaster('Setting up Profile avatar...')
-    
-  setAvatar(webPath)
-}
+
+    setAvatar(webPath)
+  }
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{width:"100%",height:'11vh'}}>
+      <AppBar position="static" style={{ width: "100%", height: '11vh' }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -90,10 +98,10 @@ export const HeaderComponent:React.FC<{}>=()=> {
             color="inherit"
             aria-label="open drawer"
           >
-            <MenuIcon />
+            <TemporaryDrawer />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-           React capacitor Example
+            React capacitor Example
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -108,11 +116,64 @@ export const HeaderComponent:React.FC<{}>=()=> {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-         <div style={{    margin: "10px"}}>
-         <Avatar alt="VB" onClick={handleCameraCapture} src={avatar} className={classes.large} />
-           </div>
+          <div style={{ margin: "10px" }} onClick={handleCameraCapture}>
+            {avatar ? <Avatar alt="VB" src={avatar} className={classes.large} /> : <Avatar className={classes.large}>{props.username[0]}</Avatar>}
+          </div>
         </Toolbar>
       </AppBar>
+    </div>
+  );
+}
+
+
+
+const TemporaryDrawer = () => {
+  const classes = useStyles();
+  const [state, setState] = React.useState({
+    show: false
+  });
+
+  const toggleDrawer = (open) => (event) => {
+
+    console.log(open);
+
+
+    setState({ show: open });
+  };
+
+  const list = () => {
+    return <div
+      className={classes.list}
+      role="presentation"
+      onClick={() => toggleDrawer(false)}
+      onKeyDown={() => toggleDrawer(false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  };
+
+  return (
+    <div>
+      <MenuIcon onClick={toggleDrawer(true)} />
+      <Drawer anchor={'left'} open={state.show} onClose={() => toggleDrawer(false)}>
+        {list()}
+      </Drawer>
     </div>
   );
 }

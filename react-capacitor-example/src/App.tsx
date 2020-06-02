@@ -5,6 +5,6 @@ import {AppListeners} from './app/native/AppListener'
 
 function App() {
   AppListeners()
-  return <BasePage />
+  return          <BasePage />
 }
 export default App;
